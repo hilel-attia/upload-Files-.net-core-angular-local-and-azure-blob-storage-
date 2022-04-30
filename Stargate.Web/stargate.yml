@@ -1,0 +1,68 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: stargate-back
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: stargate-back
+    spec:
+      containers:
+      - name: stargate-back
+        image: redis
+        ports:
+        - containerPort: 6379
+          name: redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stargate-back
+spec:
+  ports:
+  - port: 6379
+  selector:
+    app: stargate-back
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: stargate-front
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5 
+  template:
+    metadata:
+      labels:
+        app: stargate-front
+    spec:
+      containers:
+      - name: stargate-front
+        image: wsharp007.azurecr.io/stargate:firsttry
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 250m
+          limits:
+            cpu: 500m
+        env:
+        - name: REDIS
+          value: "stargate-back"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stargate-front
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: stargate-front

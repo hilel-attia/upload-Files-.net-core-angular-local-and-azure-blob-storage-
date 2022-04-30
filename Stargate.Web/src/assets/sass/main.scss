@@ -1,0 +1,54 @@
+// src/assets/sass/main.scss
+@import '~bulma/bulma';
+
+.site {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+.site-content {
+    flex: 1;
+  }
+
+.file-name {
+    background: white;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 0%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip-visible {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
